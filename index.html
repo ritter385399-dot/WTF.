@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>安全警告</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    body {
+      background: #f2f2f2;
+      height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+    }
+
+    .overlay {
+      position: fixed;
+      top: 0; left: 0; width: 100%; height: 100%;
+      background: #f2f2f2;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 999;
+    }
+
+    .warning-card {
+      background: white;
+      width: 90%;
+      max-width: 420px;
+      border-radius: 12px;
+      box-shadow: 0 8px 30px rgba(0,0,0,0.12);
+      overflow: hidden;
+      text-align: center;
+    }
+
+    .warning-header {
+      background: #d93025;
+      padding: 28px 20px 20px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    .shield-icon {
+      width: 56px; height: 56px;
+      background: white;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: 12px;
+    }
+
+    .shield-icon svg {
+      width: 32px; height: 32px;
+      fill: #d93025;
+    }
+
+    .warning-header h1 {
+      color: white;
+      font-size: 22px;
+      font-weight: 600;
+      letter-spacing: 0.5px;
+      margin-bottom: 4px;
+    }
+
+    .warning-header p {
+      color: rgba(255,255,255,0.9);
+      font-size: 14px;
+    }
+
+    .warning-body {
+      padding: 24px 20px 20px;
+    }
+
+    .message {
+      color: #333;
+      font-size: 15px;
+      line-height: 1.6;
+      margin-bottom: 24px;
+    }
+
+    .message strong { color: #d93025; }
+
+    .actions {
+      display: flex;
+      gap: 12px;
+      justify-content: center;
+      flex-wrap: wrap;
+    }
+
+    .btn {
+      padding: 12px 28px;
+      border-radius: 6px;
+      font-weight: 600;
+      font-size: 16px;
+      border: none;
+      cursor: pointer;
+      transition: 0.2s;
+      min-width: 110px;
+    }
+
+    .btn-danger { background: #d93025; color: white; }
+    .btn-danger:hover { background: #b3261e; }
+    .btn-secondary { background: #e8e8e8; color: #333; }
+    .btn-secondary:hover { background: #d6d6d6; }
+
+    .footer-note {
+      margin-top: 20px;
+      font-size: 12px;
+      color: #999;
+    }
+  </style>
+</head>
+<body>
+  <div class="overlay" id="warningOverlay">
+    <div class="warning-card">
+      <div class="warning-header">
+        <div class="shield-icon">
+          <svg viewBox="0 0 24 24">
+            <path d="M12 1L3 5v6c0 5.55 3.84 10.74 9 12 5.16-1.26 9-6.45 9-12V5l-9-4zm-1 6h2v5h-2V7zm0 6h2v2h-2v-2z"/>
+          </svg>
+        </div>
+        <h1>危险网站警告</h1>
+        <p>浏览器安全检测系统</p >
+      </div>
+      <div class="warning-body">
+        <div class="message">
+          <strong>此网页已被多名用户举报</strong><br>
+          内容可能包含<strong>血腥、暴力</strong>或引起强烈不适的元素。<br>
+          请确认您已年满18周岁并自愿承担观看风险。
+        </div>
+        <div class="actions">
+          <button class="btn btn-danger" id="confirmBtn">继续访问（已满18岁）</button>
+          <button class="btn btn-secondary" id="cancelBtn">返回安全页面</button>
+        </div>
+        <div class="footer-note">
+          系统时间：<span id="timeDisplay"></span><br>
+          您的访问行为将被记录
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    (function() {
+      // ★ 你提供的视频链接 ★
+      const VIDEO_URL = 'http://www.hongzhaoruanjian.com/hz-fang-yuan-api/api/zm/duo-file/view/3bf797a39a2d4e0d9a88c53fb80b9407?token=eaccd23e93884f9e9e0048b636bb946d';
+
+      // 显示系统时间，增加真实感
+      document.getElementById('timeDisplay').textContent = new Date().toLocaleString('zh-CN');
+
+      // 确定 → 跳转视频
+      document.getElementById('confirmBtn').addEventListener('click', function() {
+        window.location.href = VIDEO_URL;
+      });
+
+      // 取消 → 尝试关闭页面，关不掉会显示提示
+      document.getElementById('cancelBtn').addEventListener('click', function() {
+        window.close();
+        setTimeout(function() {
+          document.querySelector('.message').innerHTML = '⛔ 已取消访问<br><small>您可以关闭此页面</small>';
+        }, 200);
+      });
+    })();
+  </script>
+</body>
+</html>
